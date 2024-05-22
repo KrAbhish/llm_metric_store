@@ -1,0 +1,223 @@
+cubes:
+  - name: fact_moves
+    sql_table: dopm_americas_pub.vw_fact_equipmentactivity
+    data_source: default
+
+    joins:
+      - name: dim_delay_types
+        sql: "{CUBE.delaytypekey} = {dim_delay_types.delaytypekey}"
+        relationship: many_to_one
+      - name: dim_cranes
+        sql: "{CUBE.chekey} = {dim_cranes.chekey}"
+        relationship: many_to_one
+      - name: dim_version
+        sql: "{CUBE.versionid} = {dim_version.versionid}"
+        relationship: many_to_one
+      - name: fact_visit
+        sql: "{CUBE.visitkey} = {fact_visit.visitkey}"
+        relationship: many_to_one
+      - name: dim_indicator
+        sql: "{CUBE.opiid} = {dim_indicator.opiid}"
+        relationship: many_to_one
+      - name: dim_terminal
+        sql: "{CUBE.terminalid} = {dim_terminal.terminalid}"
+        relationship: many_to_one
+      # - name: dim_vessel
+        # sql: "{fact_visit.vesselkey} = {dim_vessel.vesselkey}"
+        # relationship: many_to_one
+
+    dimensions:
+      - name: composite_key
+        sql: CONCAT(cheid, '-', opiid, '-', versionid, '-', event_id, '-', frequencyid, '-', terminalid)
+        type: string
+        primary_key: true
+
+      - name: terminal_visit_key_cheid
+        sql: CONCAT(terminalid, '-', visitkey, '-', cheid)
+        type: string
+
+      - name: delay_type_id
+        sql: '{CUBE}.delaytypeid'
+        type: string
+
+      - name: cheid
+        sql: '{CUBE}.cheid'
+        type: number
+
+      - name: value
+        sql: value
+        type: number
+
+      - name: opiid
+        sql: opiid
+        type: string
+
+      - name: event_id
+        sql: eventid
+        type: string
+
+      - name: versionid
+        sql: '{CUBE}.versionid'
+        type: string
+
+      - name: chekey
+        sql: '{CUBE}.chekey'
+        type: string
+
+      - name: visitkey
+        sql: visitkey
+        type: string
+
+      - name: container_visit_key
+        sql: containervisitkey
+        type: string
+
+      - name: frequencyid
+        sql: frequencyid
+        type: number
+
+      - name: delaytypekey
+        sql: delaytypekey
+        type: string
+
+      - name: delay_key
+        sql: delaykey
+        type: string
+
+      - name: che_activity_id
+        sql: cheactivityid
+        type: string
+
+      - name: move_kind_id
+        sql: movekindid
+        type: string
+
+      - name: from_location_id
+        sql: fromlocationid
+        type: string
+
+      - name: to_location_id
+        sql: tolocationid
+        type: string
+
+      - name: from_position_id
+        sql: frompositionid
+        type: string
+
+      - name: to_position_id
+        sql: topositionid
+        type: string
+
+      - name: carrier_visit_id
+        sql: carriervisitid
+        type: string
+
+      - name: eventtimestamp
+        sql: EventTimestamp
+        type: time
+
+      - name: load_datetime
+        sql: loaddatetime
+        type: time
+
+      - name: terminalid
+        sql: terminalid
+        type: number
+
+      - name: terminal_name
+        sql: "{dim_terminal.terminal_name}"
+        type: string  
+
+      - name: crane_short_name
+        sql: "{dim_cranes.crane_short_name}"
+        type: string
+
+      - name: vessel_name
+        sql: "{fact_visit.vessel_name}"
+        type: string
+
+    measures:
+      - name: crane_moves
+        sql: value
+        type: sum
+        filters:
+          - sql: "upper({CUBE}.opiid) = 'NUM_MOVEMENTS' and {CUBE}.versionid = 'ACT'"
+
+      - name: total_cranes
+        sql: "{CUBE}.cheid"
+        type: count_distinct
+
+      - name: first_crane_move
+        sql: eventtimestamp
+        type: min
+        filters:
+          - sql: "upper({CUBE}.opiid) = 'NUM_MOVEMENTS' and {CUBE}.versionid = 'ACT'"
+
+      - name: last_crane_move
+        sql: eventtimestamp
+        type: max
+        filters:
+          - sql: "upper({CUBE}.opiid) = 'NUM_MOVEMENTS' and {CUBE}.versionid = 'ACT'"
+
+      - name: first_crane_move_epoch
+        sql: "unix_timestamp(min(eventtimestamp))"
+        type: number
+        filters:
+          - sql: "upper({CUBE}.opiid) = 'NUM_MOVEMENTS' and {CUBE}.versionid = 'ACT'"
+
+      - name: last_crane_move_epoch
+        sql: "unix_timestamp(max(eventtimestamp))"
+        type: number
+        filters:
+          - sql: "upper({CUBE}.opiid) = 'NUM_MOVEMENTS' and {CUBE}.versionid = 'ACT'"
+
+      - name: crane_moves_hours
+        sql: "((unix_timestamp({last_crane_move}) - unix_timestamp({first_crane_move}))/3600)"
+        type: number
+
+      - name: crane_delay_val
+        sql: value
+        type: sum
+        filters:
+          - sql: "upper({CUBE}.opiid) = 'CRANE_DELAY' and {dim_delay_types.cmphdeduction} = 1"
+
+      - name: crane_delay_hrs
+        sql: "({crane_delay_val}/3600)"
+        type: number
+        description: Total net crane moves hours.
+
+      - name: net_crane_moves_hours
+        sql: "({crane_moves_hours} - COALESCE({crane_delay_hrs}, 0))"
+        type: number
+        description: Total net crane moves hours.
+
+      - name: executed_cmph
+        sql: "case when {net_crane_moves_hours} > 0 then {crane_moves}/{net_crane_moves_hours} else 0 end"
+        type: number
+        description: Number of moves per crane per hour. Formula for CMPH is ("Terminal throughput billable moves" / "total crane hours")
+
+      - name: no_of_planned_moves
+        sql: value
+        type: sum
+        description: measure to calculate total number of Planned Moves
+        filters:
+          - sql: "upper({CUBE}.opiid) = 'NUM_MOVEMENTS' and {CUBE}.versionid = 'PLAN'"
+     
+      - name: pending_moves
+        sql: "{no_of_planned_moves} - {crane_moves}"
+        type: number
+        description: measure to calculate Pending Crane Moves
+
+    pre_aggregations:
+       - name: main
+         measures:
+           - fact_moves.crane_moves
+           - fact_moves.last_crane_move
+           - fact_moves.first_crane_move
+           - fact_moves.crane_delay_hrs
+           - fact_moves.net_crane_moves_hours
+           - fact_moves.executed_cmph
+         dimensions:
+           - fact_moves.terminalid
+           - fact_moves.cheid
+           - fact_moves.visitkey
