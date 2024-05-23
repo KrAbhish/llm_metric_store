@@ -135,8 +135,8 @@ class CubeSemanticLoader(BaseLoader):
         for cube_data_obj in cube_data_objects:
             cube_data_obj_name = cube_data_obj.get("name")
             cube_data_obj_type = cube_data_obj.get("type")
-            if(cube_data_obj_type == "view"):
-                print(f"Loading only {cube_data_obj_name}, because it is a view.")
+            if(cube_data_obj_type == "cube"):
+                print(f"Loading only {cube_data_obj_name}, because it is a cube.")
                 cube_data_obj_is_public = cube_data_obj.get("public")
                 measures = cube_data_obj.get("measures", [])
                 dimensions = cube_data_obj.get("dimensions", [])
