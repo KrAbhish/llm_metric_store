@@ -4,7 +4,10 @@ import time
 from typing import List
 
 import requests
-from langchain_core.documents import Document
+# from langchain_core.documents import Document
+from langchain.docstore.document import Document
+# from llama_index.legacy import LLMPredictor, GPTVectorStoreIndex, Document, ServiceContext
+
 
 from langchain_community.document_loaders.base import BaseLoader
 
@@ -258,85 +261,3 @@ class CubeSemanticLoader(BaseLoader):
                     docs.append(Document(page_content=page_content, metadata=metadata))
 
         return docs
-    # def fetch_cube_metadata(self) -> List[Document]:
-    #     """Makes a call to Cube's REST API metadata endpoint.
-
-    #     Returns:
-    #         A list of documents with attributes:
-    #             - page_content=column_title + column_description
-    #             - metadata
-    #                 - table_name
-    #                 - column_name
-    #                 - column_data_type
-    #                 - column_member_type
-    #                 - column_title
-    #                 - column_description
-    #                 - column_values
-    #                 - cube_data_obj_type
-    #     """
-    #     headers = {
-    #         "Content-Type": "application/json",
-    #         "Authorization": self.cube_api_token,
-    #     }
-
-    #     print(f"Loading metadata from {self.cube_api_url}...")
-    #     response = requests.get(f"{self.cube_api_url}/meta", headers=headers)
-    #     response.raise_for_status()
-    #     raw_meta_json = response.json()
-    #     cube_data_objects = raw_meta_json.get("cubes", [])
-
-    #     print(f"Found {len(cube_data_objects)} cube data objects in metadata.")
-
-    #     if not cube_data_objects:
-    #         raise ValueError("No cubes found in metadata.")
-
-    #     docs = []
-
-    #     for cube_data_obj in cube_data_objects:
-    #         cube_data_obj_name = cube_data_obj.get("name")
-    #         cube_data_obj_type = cube_data_obj.get("type")
-    #         if(cube_data_obj_type == "cube"):
-    #             print(f"Loading only {cube_data_obj_name}, because it is a cube.")
-    #             cube_data_obj_is_public = cube_data_obj.get("public")
-    #             measures = cube_data_obj.get("measures", [])
-    #             dimensions = cube_data_obj.get("dimensions", [])
-
-    #             print(f"Processing {cube_data_obj_name}...")
-
-    #             if not cube_data_obj_is_public:
-    #                 print(f"Skipping {cube_data_obj_name} because it is not public.")
-    #                 continue
-
-    #             for item in measures + dimensions:
-    #                 column_member_type = "measure" if item in measures else "dimension"
-    #                 dimension_values = []
-    #                 item_name = str(item.get("name"))
-    #                 item_type = str(item.get("type"))
-    #                 print(f"SD: Processing {item_name} : {item_type}...")
-
-    #                 if (
-    #                     self.load_dimension_values
-    #                     and column_member_type == "dimension"
-    #                     and item_type == "string"
-    #                 ):
-    #                     dimension_values = self._get_dimension_values(item_name)
-
-    #                 print("SD: Dimension values:", str(dimension_values))
-
-    #                 metadata = dict(
-    #                     table_name=str(cube_data_obj_name),
-    #                     column_name=item_name,
-    #                     column_data_type=item_type,
-    #                     column_title=str(item.get("title")),
-    #                     column_description=str(item.get("description")),
-    #                     column_member_type=column_member_type,
-    #                     column_values=dimension_values,
-    #                     cube_data_obj_type=cube_data_obj_type,
-    #                 )
-
-    #                 page_content = f"{str(item.get('title'))}, "
-    #                 page_content += f"{str(item.get('description'))}"
-
-    #                 docs.append(Document(page_content=page_content, metadata=metadata))
-
-    #     return docs
