@@ -2,3 +2,4 @@
 *.faiss
 *.pkl
 *.json
+*.pyc
