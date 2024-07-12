@@ -1,4 +1,64 @@
-In cricket, the Kolkata Knight Riders defeat Sunrisers Hyderabad to win the Indian Premier League (player of the final Mitchell Starc pictured).
-Gitanas Nausėda is re-elected as president of Lithuania.
-A landslide in Papua New Guinea's Enga Province leaves thousands of people missing and presumed dead.
-The European Union passes the Artificial Intelligence Act, aiming to establish a regulatory and legal framework for AI.
+---
+
+**Computer Infrastructure Metrics and KPIs**
+
+1. **Server Uptime**
+   - **Description**: Measures the percentage of time servers are operational and available.
+   - **Formula**: (Total Uptime / Total Scheduled Time) x 100
+   - **Importance**: High uptime ensures system reliability and minimizes disruptions to business operations.
+
+2. **Network Latency**
+   - **Description**: Indicates the time taken for data packets to travel from source to destination.
+   - **Formula**: Average Round-Trip Time (RTT) in milliseconds
+   - **Importance**: Lower latency results in faster data transmission and improved application performance.
+
+3. **CPU Utilization**
+   - **Description**: Measures the percentage of CPU capacity currently in use.
+   - **Formula**: (Total CPU Time Used / Total CPU Capacity) x 100
+   - **Importance**: Monitoring CPU usage helps in identifying performance bottlenecks and ensuring efficient resource allocation.
+
+4. **Memory Utilization**
+   - **Description**: Indicates the percentage of memory being used out of the total available.
+   - **Formula**: (Used Memory / Total Available Memory) x 100
+   - **Importance**: Helps in managing memory resources effectively to avoid system slowdowns or crashes.
+
+5. **Disk I/O Performance**
+   - **Description**: Measures the read and write speeds of the disk subsystem.
+   - **Formula**: Average Read/Write Speed in MB/s
+   - **Importance**: Critical for understanding the performance of storage systems and ensuring fast data access.
+
+6. **Network Throughput**
+   - **Description**: Indicates the amount of data transmitted over the network in a given time.
+   - **Formula**: Data Transferred / Time Period in Mbps
+   - **Importance**: High throughput is essential for efficient data transfer and network performance.
+
+7. **Error Rates**
+   - **Description**: Tracks the number of errors occurring in the system, such as packet loss, system errors, or failed processes.
+   - **Formula**: Number of Errors / Time Period
+   - **Importance**: Identifying and resolving errors promptly can enhance system stability and performance.
+
+8. **System Response Time**
+   - **Description**: Measures the time taken by the system to respond to a user or application request.
+   - **Formula**: Average Response Time in milliseconds
+   - **Importance**: Lower response times improve user experience and system efficiency.
+
+9. **Backup Success Rate**
+   - **Description**: Indicates the percentage of successful backup operations.
+   - **Formula**: (Successful Backups / Total Backup Attempts) x 100
+   - **Importance**: Ensures data availability and recovery in case of system failures or data loss.
+
+10. **Patch Compliance Rate**
+    - **Description**: Measures the percentage of systems that have the latest patches and updates installed.
+    - **Formula**: (Patched Systems / Total Systems) x 100
+    - **Importance**: Maintaining a high patch compliance rate is crucial for security and protecting systems from vulnerabilities.
+
+11. **Service Level Agreement (SLA) Compliance**
+    - **Description**: Tracks adherence to the agreed service levels for uptime, performance, and support.
+    - **Formula**: (Compliant Services / Total Services) x 100
+    - **Importance**: Ensures that the IT infrastructure meets the contractual obligations and performance standards set with clients.
+
+12. **Incident Resolution Time**
+    - **Description**: Measures the average time taken to resolve incidents and issues.
+    - **Formula**: Total Resolution Time / Number of Incidents
+    - **Importance**: Faster incident resolution enhances system reliability and user satisfaction.
+

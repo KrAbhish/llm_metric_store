@@ -1,13 +1,55 @@
-# This text splitter is used to create the child documents
-child_splitter = RecursiveCharacterTextSplitter(chunk_size=400)
-# The vectorstore to use to index the child chunks
-vectorstore = Chroma(
-    collection_name="full_documents", embedding_function=OpenAIEmbeddings()
-)
-# The storage layer for the parent documents
-store = InMemoryStore()
-retriever = ParentDocumentRetriever(
-    vectorstore=vectorstore,
-    docstore=store,
-    child_splitter=child_splitter,
-)
+---
+
+**Shipping and Logistics Company Metrics and KPIs**
+
+1. **Order Accuracy Rate**
+   - **Description**: Measures the percentage of orders correctly processed and delivered without errors.
+   - **Formula**: (Correct Orders / Total Orders) x 100
+   - **Importance**: High accuracy in order processing reduces returns and increases customer satisfaction.
+
+2. **On-Time Delivery Rate**
+   - **Description**: Indicates the percentage of shipments delivered on or before the promised delivery date.
+   - **Formula**: (On-Time Deliveries / Total Deliveries) x 100
+   - **Importance**: Timely deliveries enhance customer trust and loyalty.
+
+3. **Average Delivery Time**
+   - **Description**: Calculates the average time taken from order placement to delivery.
+   - **Formula**: Total Delivery Time / Number of Deliveries
+   - **Importance**: Helps in assessing the efficiency of the delivery process and identifying areas for improvement.
+
+4. **Transportation Cost per Mile**
+   - **Description**: Measures the cost incurred per mile of transportation.
+   - **Formula**: Total Transportation Costs / Total Miles Traveled
+   - **Importance**: Crucial for budgeting and cost management, and helps in optimizing routes.
+
+5. **Freight Bill Accuracy**
+   - **Description**: Tracks the accuracy of freight bills, ensuring there are no discrepancies between billed and actual amounts.
+   - **Formula**: (Accurate Freight Bills / Total Freight Bills) x 100
+   - **Importance**: Ensures proper billing and avoids financial losses due to billing errors.
+
+6. **Inventory Turnover Rate**
+   - **Description**: Indicates how often inventory is sold and replaced over a period.
+   - **Formula**: Cost of Goods Sold / Average Inventory
+   - **Importance**: Higher turnover rates imply efficient inventory management and reduced holding costs.
+
+7. **Capacity Utilization**
+   - **Description**: Measures how effectively the company's transportation and storage capacities are being utilized.
+   - **Formula**: (Used Capacity / Total Available Capacity) x 100
+   - **Importance**: Maximizes resource usage and identifies underutilized assets.
+
+8. **Customer Satisfaction Score (CSAT)**
+   - **Description**: Gauges customer satisfaction with services provided.
+   - **Formula**: (Total Satisfied Responses / Total Responses) x 100
+   - **Importance**: Directly linked to customer retention and overall business growth.
+
+9. **Damage Rate**
+   - **Description**: Calculates the percentage of goods damaged during transit.
+   - **Formula**: (Damaged Goods / Total Shipped Goods) x 100
+   - **Importance**: Identifying and reducing damage rates can significantly improve service quality and reduce costs.
+
+10. **Return Rate**
+    - **Description**: Measures the percentage of delivered goods that are returned by customers.
+    - **Formula**: (Returned Goods / Total Shipped Goods) x 100
+    - **Importance**: High return rates may indicate issues with product quality or accuracy of orders.
+
+---
